@@ -11,7 +11,7 @@
 
     <modules>
         <Optimiseweb_Redirects>
-            <version>0.3.2</version>
+            <version>0.3.5</version>
         </Optimiseweb_Redirects>
     </modules>
 
@@ -83,6 +83,12 @@
             <disabled_products>
                 <enabled>0</enabled>
             </disabled_products>
+            <notvisible_products>
+                <enabled>0</enabled>
+            </notvisible_products>
+            <disabled_categories>
+                <enabled>0</enabled>
+            </disabled_categories>
             <redirects1>
                 <delimiter>,</delimiter>
                 <wildcardcharacter>*</wildcardcharacter>

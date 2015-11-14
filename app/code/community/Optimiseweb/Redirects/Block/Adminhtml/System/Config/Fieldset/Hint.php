@@ -53,7 +53,7 @@ class Optimiseweb_Redirects_Block_Adminhtml_System_Config_Fieldset_Hint extends 
 
     public function getOptimiseWebEmailLink()
     {
-        $email = 'info@optimiseweb.co.uk';
+        $email = 'sid@optimiseweb.co.uk';
         $emailLink = 'mailto:' . $email;
         return $emailLink;
     }
@@ -74,8 +74,7 @@ class Optimiseweb_Redirects_Block_Adminhtml_System_Config_Fieldset_Hint extends 
 
     public function getPxUrl()
     {
-        $url = 'https://optimiseweb.co.uk/magento-connect/assets/logo/optimiseweb.php?';
-        $url .= $this->getPxParams();
+        $url = 'https://optimiseweb.co.uk/magento-connect/assets/logo/optimiseweb.jpg';
         return $url;
     }
 

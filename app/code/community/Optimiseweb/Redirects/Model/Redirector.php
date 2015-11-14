@@ -25,6 +25,7 @@ class Optimiseweb_Redirects_Model_Redirector
         $actionName = $request->getActionName();
 
         $disabledProductCheck = $this->disabledProductCheck($request);
+        $notvisibleProductCheck = $this->notvisibleProductCheck($request);
         $disabledCategoryCheck = $this->disabledCategoryCheck($request);
 
         $requestUrl = rtrim($request->getScheme() . '://' . $request->getHttpHost() . $request->getRequestUri(), '/');
@@ -32,12 +33,15 @@ class Optimiseweb_Redirects_Model_Redirector
             //$requestUrl = rtrim($request->getScheme() . '://' . $request->getHttpHost() . '/' . $disabledProductCheck, '/');
             $requestUrl = rtrim(Mage::getUrl() . $disabledProductCheck, '/');
         }
+        if ($notvisibleProductCheck) {
+            //$requestUrl = rtrim($request->getScheme() . '://' . $request->getHttpHost() . '/' . $disabledProductCheck, '/');
+            $requestUrl = rtrim(Mage::getUrl() . $notvisibleProductCheck, '/');
+        }
         if ($disabledCategoryCheck) {
             //$requestUrl = rtrim($request->getScheme() . '://' . $request->getHttpHost() . '/' . $disabledCategoryCheck, '/');
             $requestUrl = rtrim(Mage::getUrl() . $disabledCategoryCheck, '/');
         }
-
-        if (($actionName == 'noRoute') OR $disabledProductCheck OR $disabledCategoryCheck) {
+        if (($actionName == 'noRoute') OR $disabledProductCheck OR $notvisibleProductCheck OR $disabledCategoryCheck) {
             Mage::dispatchEvent('optimiseweb_redirects_before_legacy', array('request_url' => &$requestUrl));
             $this->doRedirectsLegacy($requestUrl);
             Mage::dispatchEvent('optimiseweb_redirects_before_v1', array('request_url' => &$requestUrl));
@@ -58,6 +62,22 @@ class Optimiseweb_Redirects_Model_Redirector
                 if (($request->getModuleName() == 'catalog') AND ( $request->getControllerName() == 'product') AND ( $request->getActionName() == 'view')) {
                     if ($product = Mage::getModel('catalog/product')->load(Mage::app()->getRequest()->getParam('id'))) {
                         if ($product->getStatus() == 2) {
+                            return $product->getUrlPath();
+                        }
+                    }
+                }
+            }
+        }
+        return FALSE;
+    }
+
+    protected function notvisibleProductCheck($request)
+    {
+        if ($request->getActionName() !== 'noRoute') {
+            if ((bool) Mage::getStoreConfig('optimisewebredirects/notvisible_products/enabled')) {
+                if (($request->getModuleName() == 'catalog') AND ( $request->getControllerName() == 'product') AND ( $request->getActionName() == 'view')) {
+                    if ($product = Mage::getModel('catalog/product')->load(Mage::app()->getRequest()->getParam('id'))) {
+                        if ($product->getVisibility() == 1) {
                             return $product->getUrlPath();
                         }
                     }

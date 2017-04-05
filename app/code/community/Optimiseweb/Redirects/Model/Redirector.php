@@ -197,9 +197,9 @@ class Optimiseweb_Redirects_Model_Redirector
 
                         if ($sourceUrl == $requestUrl) {
                             $doRedirect = TRUE;
-                        } elseif (strpos($sourceUrl, Mage::getStoreConfig('optimisewebredirects/querystring/wildcardcharacter'))) {
+                        } elseif (strpos($sourceUrl, Mage::getStoreConfig('optimisewebredirects/querystring/wildcardcharacter')) !== false) {
                             $sourceUrl = str_replace(Mage::getStoreConfig('optimisewebredirects/querystring/wildcardcharacter'), '', $sourceUrl);
-                            if (strpos($requestUrl, $sourceUrl) === 0) {
+                            if (strpos($requestUrl, $sourceUrl) !== false) {
                                 $doRedirect = TRUE;
                             }
                         }
